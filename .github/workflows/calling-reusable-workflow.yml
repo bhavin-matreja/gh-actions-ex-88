@@ -72,6 +72,9 @@ jobs:
     uses: ./.github/workflows/reusable.yml
     with:
       my-artifact-name: dist-files
+    # Passing secret to reusable.yml
+    # secrets:
+    #   some-secret: ${{ secrets.some-secret}}
   report:
     # condition on job, if any other job has failed then only execute this job
     needs: [lint, deploy]
