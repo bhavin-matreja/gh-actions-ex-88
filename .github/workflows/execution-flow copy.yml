@@ -69,7 +69,7 @@ jobs:
           path: dist
   deploy:
     needs: build
-    uses: ./.github/workflows/resuable.yml
+    uses: ./.github/workflows/reusable.yml
   report:
     # condition on job, if any other job has failed then only execute this job
     needs: [lint, deploy]
