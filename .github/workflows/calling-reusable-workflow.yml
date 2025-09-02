@@ -75,6 +75,13 @@ jobs:
     # Passing secret to reusable.yml
     # secrets:
     #   some-secret: ${{ secrets.some-secret}}
+  print-deploy-result:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get output from deploy
+        run: |
+          echo "${{ needs.deploy.outputs.my-result }}"
   report:
     # condition on job, if any other job has failed then only execute this job
     needs: [lint, deploy]
