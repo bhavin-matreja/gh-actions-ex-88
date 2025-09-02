@@ -70,6 +70,8 @@ jobs:
   deploy:
     needs: build
     uses: ./.github/workflows/reusable.yml
+    with:
+      my-artifact-name: dist-files
   report:
     # condition on job, if any other job has failed then only execute this job
     needs: [lint, deploy]
