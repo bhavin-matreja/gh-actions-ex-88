@@ -1,7 +1,11 @@
 name: Reusable Deploy
 on: 
+    # workflow_call: This means the workflow doesn’t run on its own — it can only run when another workflow invokes it using the uses keyword.
     workflow_call:
-        # accept input from other workflow
+        # accept input from caller workflow
+        # The calling workflow can provide a value for my-artifact-name.
+        # If not provided, it defaults to dist.
+        # Inputs are strongly typed (string, boolean, number).
         inputs:
             my-artifact-name:
                 description: The name of the deployable artifact files

@@ -13,9 +13,12 @@ jobs:
         id: cache
         uses: actions/cache@v3
         with:
+          # cache the complete folder instead, repeated in other jobs
+          #Cache node_modules based on package-lock.json.
           path: node_modules
           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
+         #Install dependencies only if cache is not found (if: steps.cache.outputs.cache-hit != 'true').
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Lint code
@@ -39,6 +42,7 @@ jobs:
         run: npm run test
       - name: Upload test report
         # if previous step has failed and failure() - if any previous step has failed then only execute the step
+        # Only upload test report if this job failed and specifically the "Test code" step failed.
         if: failure() && steps.step-test-code.outcome == 'failure'
         uses: actions/upload-artifact@v4
         with:
@@ -79,10 +83,11 @@ jobs:
         run: ls
       - name: Deploy
         run: echo "Deploying..."
-  report:
+  report: # Acts as a failure notification job
     # condition on job, if any other job has failed then only execute this job
-    needs: [lint, deploy]
-    if: failure()
+    needs: [lint, deploy] #runs after lint and deploy(deploy only runs after test, build)
+    # failure() - will only run if any of other jobs failed
+    if: failure() 
     runs-on: ubuntu-latest
     steps:
       - name: Output information
